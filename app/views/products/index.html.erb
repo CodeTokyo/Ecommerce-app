@@ -1,10 +1,10 @@
 </div id="product-list">
 <h1> Welcome to Plue's Plants!</h1>
-<h2> Take a look at all of our products!</h2>
+<h2><%= @category ? "Showing Results for '#{@category.name}'" : "All Products" %></h2>
 
 <%= form_tag("/products", method: :get) do %>
 <%= label_tag(:catergory_id, "Select a Product Category to search by:") %>
-  <%= select_tag(:category_id, options_from_collection_for_select(@categories, :id, :name), prompt: "Select Product Category") %>
+  <%= select_tag(:category_id, options_from_collection_for_select(@categories, :id, :name, @catgeory ? @category_id : nil), prompt: "Select Product Category") %>
   <%= submit_tag("Search") %>
   <br>
 <% end %>
