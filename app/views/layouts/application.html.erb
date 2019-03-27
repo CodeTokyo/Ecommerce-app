@@ -9,7 +9,53 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
-    <%= yield %>
+        <body>
+          <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <%= link_to("Plue's Production", "/", class: "navbar-brand") %>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item <%= 'active' if current_page?('/products') %>">
+              <%= link_to("/products", class: "nav-link") do %>
+                All Products <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/products") %>
+              <% end %>
+            </li>
+
+            <% if user_signed_in? %>
+              <li class="nav-item <%= 'active' if current_page?('/products/new') %>">
+                <%= link_to("/products/new", class: "nav-link") do %>
+                  New Product? <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/products/new") %>
+                <% end %>
+              </li>
+            <% end %>
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Profile
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <% if user_signed_in? %>
+                  <%= link_to('Edit Profile', edit_user_registration_path, class: "dropdown-item") %>
+                  <div class="dropdown-divider"></div>
+                  <%= link_to('Logout', destroy_user_session_path, method: :delete, class: "dropdown-item") %>
+                <% else %>
+                  <%= link_to "Sign up", new_user_registration_path, class: "dropdown-item" %>
+                  <%= link_to "Login", new_user_session_path, class: "dropdown-item" %>
+                <% end %>
+              </div>
+            </li>
+            </li>
+          </ul>
+          </form>
+        </div>
+      </nav>
+      <div class="container main-content">
+        <%= flash_messages %>
+        <%= yield %>
+      </div>
   </body>
 </html>

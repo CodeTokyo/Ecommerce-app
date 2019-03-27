@@ -1,17 +1,20 @@
 class ProductsController < ApplicationController
+  before_action :authenticate_user!, only: [:update]
+
   def index
-  if params[:category_id] && Category.ids.include?(params[:category_id].to_i)
-    @category = Category.find(params[:category_id])
-    @products = @category.products
-  else
-    @products = Product.all
-  end
-  @categories = Category.all
+    if params[:category_id] && Category.ids.include?(params[:category_id].to_i)
+      @category = Category.find(params[:category_id])
+      @products = @category.products
+    else
+      @products = Product.all
+    end
+    @categories = Category.all
   end
   
   def show
     @product = Product.find(params[:id])
   end
+
   def new
     @categories = Category.all
   end
@@ -26,7 +29,7 @@ class ProductsController < ApplicationController
     )
 
     product.save
-
+    flash[:success] = "You created a new product"
     redirect_to "/products"
   end
 
@@ -46,14 +49,14 @@ class ProductsController < ApplicationController
 
 
                   )
-
+    flash[:success] = "Product is updated"
     redirect_to "/products"
   end
 
   def destroy
     product = Product.find(params[:id])
     product.destroy
-
+    flash[:success] = "Product deleted"
     redirect_to "/products"
   end
 end

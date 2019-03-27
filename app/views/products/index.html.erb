@@ -1,20 +1,30 @@
 </div id="product-list">
-<h1> Welcome to Plue's Plants!</h1>
+<h1> Welcome to Plue's Production!</h1>
 <h2><%= @category ? "Showing Results for '#{@category.name}'" : "All Products" %></h2>
 
 <%= form_tag("/products", method: :get) do %>
-<%= label_tag(:catergory_id, "Select a Product Category to search by:") %>
-  <%= select_tag(:category_id, options_from_collection_for_select(@categories, :id, :name, @catgeory ? @category_id : nil), prompt: "Select Product Category") %>
-  <%= submit_tag("Search") %>
-  <br>
-<% end %>
-
-<% @products.each do |product| %>
-  <div class="product">
-    <h3><%= product.name%></h3>
-    <p><%= product.price_format %></p>
-    <%= link_to("/products/#{product.id}") do %>
-      <%= image_tag(product.image_url) %>
-    <% end %>
+<div class="row">
+  <div class="col-sm-3">
+    <%= label_tag(:catergory_id, "Select a Product Category to search by:") %>    
   </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <%= select_tag(:category_id, options_from_collection_for_select(@categories, :id, :name, @catgeory ? @category_id : nil), prompt: "Select Product Category", class: "form-control") %>
+      </div>    
+    </div>
+  <div class="col-sm-3">
+  <%= submit_tag("Search", class: "btn btn-primary") %>    
+  </div>
+</div>
 <% end %>
+<div class="row">
+<% @products.each do |product| %>
+    <div class="product col-sm-4">
+      <h3><%= product.name%></h3>
+      <p><%= product.price_format %></p>
+      <%= link_to("/products/#{product.id}") do %>
+        <%= image_tag(product.image_url) %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
