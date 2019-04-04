@@ -17,14 +17,18 @@
   </div>
 </div>
 <% end %>
+
 <div class="row">
-<% @products.each do |product| %>
-    <div class="product col-sm-4">
-      <h3><%= product.name%></h3>
-      <p><%= product.price_format %></p>
-      <%= link_to("/products/#{product.id}") do %>
-        <%= image_tag(product.image_url) %>
-      <% end %>
-    </div>
+  <% @products.each do |product| %>
+    <div class="col-md-4">
+      <div class="card" style="width: 18rem;">
+        <%= image_tag(product.image_url, class: "card-img-top") %>
+        <div class="card-body">
+          <h5 class="card-title">product.name</h5>
+          <p class="card-text">product.price_format</p>
+          <%= link_to("View Product In Store", "/products/#{product.id}", class: "btn btn-primary") %>
+        </div>
+      </div>
+    </div>  
   <% end %>
 </div>

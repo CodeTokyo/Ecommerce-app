@@ -5,6 +5,8 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -25,7 +27,13 @@
               <% end %>
             </li>
 
-            <% if user_signed_in? %>
+            <li class="nav-item <%= 'active' if current_page?('/cart') %>">
+              <%= link_to("/cart", class: "nav-link") do %>
+                 <i class="fas fa-shopping-cart"></i> <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/cart") %>
+              <% end %>
+            </li>
+
+            <% if user_signed_in? && current_user.is_admin? %>
               <li class="nav-item <%= 'active' if current_page?('/products/new') %>">
                 <%= link_to("/products/new", class: "nav-link") do %>
                   New Product? <%= (content_tag :span, "(current)", :class => "sr-only") if current_page?("/products/new") %>
@@ -40,6 +48,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <% if user_signed_in? %>
                   <%= link_to('Edit Profile', edit_user_registration_path, class: "dropdown-item") %>
+                  <%= link_to('Order History', "/orders", class: "dropdown-item") %>
                   <div class="dropdown-divider"></div>
                   <%= link_to('Logout', destroy_user_session_path, method: :delete, class: "dropdown-item") %>
                 <% else %>

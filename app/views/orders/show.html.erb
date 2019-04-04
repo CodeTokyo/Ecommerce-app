@@ -1,0 +1,16 @@
+<h1>Order Summary</h1>
+
+<h3>Total: <%= @order.total %></h3>
+
+<% @order.user_products.each do |user_product| %>
+  <div class="col-md-4">
+      <div class="card" style="width: 18rem;">
+        <%= image_tag(user_product.product.image_url, class: "card-img-top") %>
+        <div class="card-body">
+          <h5 class="card-title">user_product.product.name</h5>
+          <p class="card-text">user_product.product.price_format</p>
+          <%= link_to("View Product", "/products/#{user_product.product.id}", class: "btn btn-primary") %>
+        </div>
+      </div>
+    </div>  
+<% end %>

@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :authenticate_admin!, except: [:index, :show]
 
   def index
     if params[:category_id] && Category.ids.include?(params[:category_id].to_i)
@@ -16,11 +17,12 @@ class ProductsController < ApplicationController
   end
 
   def new
+    @product = Product.new
     @categories = Category.all
   end
 
   def create
-    product = Product.new( 
+    @product = Product.new( 
                       name: params[:name], 
                       description: params[:description], 
                       price: params[:price],
@@ -28,9 +30,14 @@ class ProductsController < ApplicationController
                       category_id: params[:category_id] 
     )
 
-    product.save
-    flash[:success] = "You created a new product"
-    redirect_to "/products"
+    if @product.save
+      flash[:success] = "You created a new product"
+      redirect_to "/products/#{@product.id}"
+    else
+      @categories = Category.all
+      flash[:error] = "Something went wrong"
+      render 'new'
+    end
   end
 
   def edit
@@ -39,18 +46,23 @@ class ProductsController < ApplicationController
   end
 
   def update
-    product = Product.find(params[:id])
-    product.update(
+    @product = Product.find(params[:id])
+
+    if @product.update(
                       name: params[:name], 
                       description: params[:description], 
                       price: params[:price],
                       image_url: params[:image_url],
                       category_id: params[:category_id]
-
-
                   )
-    flash[:success] = "Product is updated"
-    redirect_to "/products"
+
+      flash[:success] = "Product is updated"
+      redirect_to "/products/#{@product.id}"
+    else
+      flash[:error] = "Something went wrong"
+      @categories = Category.all
+      render 'edit'
+    end
   end
 
   def destroy
