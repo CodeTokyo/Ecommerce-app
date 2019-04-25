@@ -22,10 +22,12 @@
   <% @products.each do |product| %>
     <div class="col-md-4">
       <div class="card" style="width: 18rem;">
-        <%= image_tag(product.image_url, class: "card-img-top") %>
+        <% if product.image.attached? %>
+          <%= image_tag(product.image , class: "card-img-top") %>
+        <% end %>
         <div class="card-body">
-          <h5 class="card-title">product.name</h5>
-          <p class="card-text">product.price_format</p>
+          <h5 class="card-title"><%= product.name %></h5>
+          <p class="card-text"><%= product.price_format %></p>
           <%= link_to("View Product In Store", "/products/#{product.id}", class: "btn btn-primary") %>
         </div>
       </div>
