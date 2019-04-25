@@ -39,3 +39,4 @@ class OrdersController < ApplicationController
       render json: {status: 400}
     end
   end
+end
